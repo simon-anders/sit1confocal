@@ -13,6 +13,7 @@ for filename in glob.glob("./*czi"):
     viewer = napari.Viewer()
     viewer.add_image(img.max(1), channel_axis=0, colormap=['red', 'green', 'blue', 'cyan'], name=basename )
     shapes_layer = viewer.add_shapes()
+    shapes_layer.mode = 'add_polygon'
     napari.run()
 
     print(shapes_layer.data)
