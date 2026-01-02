@@ -62,3 +62,6 @@ display <- function( img, ... ) {
   axis( 2, dim(img)[1] - ticks, ticks)
 }
 
+get_masks <- function(imgname) {
+  reduce( sapply( seq_along(shapes[[imgname]]), function(cell) cell * polygon2mask( shapes[[imgname]][[cell]] ), simplify=FALSE ), `+` )
+}
