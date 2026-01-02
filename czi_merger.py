@@ -11,6 +11,10 @@ from glob import glob
 GLOB = "Microscopy_FH/2nd_try_patient_hd/GranB/*.czi"
 output_zarr = "2nd_try_GranB_merged.zarr"
 
+# Define your spacing (adjust these values to your actual microscope settings)
+z_spacing = 0.5  # micrometers between z-slices
+y_spacing = 0.03529  # micrometers per pixel in y
+x_spacing = 0.03529  # micrometers per pixel in x
 
 # Sort numerically by extracting the number before "zstack"
 def extract_zstack_number(filename):
