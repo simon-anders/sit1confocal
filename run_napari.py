@@ -15,7 +15,7 @@ img = czifile.imread( img_path ).squeeze()
 v = napari.Viewer()
 
 v.add_image( img, 
-  channel_axis=0, colormap=["red", "green", "blue", "cyan"], 
+  channel_axis=0, colormap=["magenta", "red", "green", "blue"], 
   name=img_shortname )
 
 shapes_layer = v.add_shapes()
