@@ -2,6 +2,11 @@ library( reticulate )
 #use_virtualenv( "./.venv" )
 use_python("/usr/bin/python")
 
+get_img_path <- function( long_img_name ) {
+  paste0( "Microscopy_FH/2nd_try_patient_hd/GranB/", long_img_name, ".czi" )
+  #paste0( "images_orig/GranB/", long_img_name, ".czi" )
+}
+
 skimage.draw <- import( "skimage.draw" )
 czifile <- import( "czifile" )
 gc <- import( "gc" )
@@ -34,11 +39,6 @@ mutate( short_name = sprintf( "G-%s-%02d", toupper(str_sub(subject,1,1)), stack_
 tibble( imgname = names(shapes) ) %>%
 left_join( imgtbl ) %>%
 pull( short_name ) -> names(shapes)
-
-get_img_path <- function( long_img_name ) {
-  #paste0( "Microscopy_FH/2nd try_patient_hd/GranB/", imgname, ".czi" )
-  paste0( "images_orig/GranB/", long_img_name, ".czi" )
-}
 
 load_image <- function( shimgname ) {
   imgtbl %>% filter( short_name == shimgname ) %>% pull( imgname ) -> imgname
