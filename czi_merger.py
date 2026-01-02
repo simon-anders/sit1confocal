@@ -5,10 +5,10 @@ from pathlib import Path
 from typing import List
 import numcodecs
 import re
-
-# Auto-populate file lists from directory
 from glob import glob
-import re
+
+# Put path to files here:
+GLOB = "images_orig/GranB/*.czi"
 
 # Sort numerically by extracting the number before "zstack"
 def extract_zstack_number(filename):
@@ -16,7 +16,7 @@ def extract_zstack_number(filename):
     return int(match.group(1)) if match else 0
 
 # Get all CZI files from the specified directory
-all_czi_files = glob("images_orig/GranB/*.czi")
+all_czi_files = glob(GLOB)
 all_czi_files = sorted(all_czi_files, key=extract_zstack_number)
 
 # Separate into patient and control based on filename
