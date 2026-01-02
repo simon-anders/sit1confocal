@@ -8,7 +8,9 @@ import re
 from glob import glob
 
 # Put path to files here:
-GLOB = "images_orig/GranB/*.czi"
+GLOB = "Microscopy_FH/2nd_try_patient_hd/GranB/*.czi"
+output_zarr = "2nd_try_GranB_merged.zarr"
+
 
 # Sort numerically by extracting the number before "zstack"
 def extract_zstack_number(filename):
@@ -47,7 +49,6 @@ output_shape = (
 
 # Zarr configuration
 chunk_shape = (1, 7, IMAGE_SIZE, IMAGE_SIZE)  # 1 channel, half z-stack, 1 image tile
-output_zarr = "merged_images.zarr"
 
 print(f"Creating zarr array with shape: {output_shape}")
 print(f"Chunk shape: {chunk_shape}")
