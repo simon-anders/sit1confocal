@@ -9,6 +9,12 @@ from glob import glob
 
 # Put path to files here:
 GLOB = "images_orig/GranB/*.czi"
+output_zarr = "merged_images.zarr"
+
+# Define your spacing (adjust these values to your actual microscope settings)
+z_spacing = 0.5  # micrometers between z-slices
+y_spacing = 0.03529  # micrometers per pixel in y
+x_spacing = 0.03529  # micrometers per pixel in x
 
 # Sort numerically by extracting the number before "zstack"
 def extract_zstack_number(filename):
@@ -47,7 +53,6 @@ output_shape = (
 
 # Zarr configuration
 chunk_shape = (1, 7, IMAGE_SIZE, IMAGE_SIZE)  # 1 channel, half z-stack, 1 image tile
-output_zarr = "merged_images.zarr"
 
 print(f"Creating zarr array with shape: {output_shape}")
 print(f"Chunk shape: {chunk_shape}")
