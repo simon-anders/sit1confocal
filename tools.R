@@ -54,80 +54,11 @@ run_napari <- function( shimgname ) {
 }
 
 display <- function( img, ... ) {
-  image( seq(1,dim(img)[2]), seq(1,dim(img)[1]), 
-      t(img)[,seq(dim(img)[1],1,-1)], 
-      asp=1, useRaster=TRUE, ... )
+  x <- seq(1,dim(img)[2])
+  y <- seq(1,dim(img)[1])
+  image( x, y, t(img)[,seq(dim(img)[1],1,-1)], 
+      asp=1, useRaster=TRUE, yaxt="n", ... )
+  ticks <- c(0, 500, 1000, 1500 )
+  axis( 2, dim(img)[1] - ticks, ticks)
 }
 
-### End Setup Code ###
-
-
-# Shapes are loaded
-str( shapes )
-
-# Images table here
-imgtbl
-
-# Images can be viewed with Napari
-imgname <- "G-P-04"
-run_napari( imgname )
-
-# images can be loaded
-img <- load_image( imgname )
-str(img)
-
-
-# Make a cell mask
-cell <- 1
-cell_mask <- polygon2mask( shapes[[imgname]][[cell]] )
-display( cell_mask )
-
-# Load image
-img <- load_image( imgname )
-
-# Display Channel 1, z-Layer 1
-display( img[1,1,,] )
-
-# Make max projection
-display( apply( img[1,,,], c(2,3), max ) )
-
-# Make a max projection, faster
-maxproj <- do.call( pmax, asplit(img[1,,,],1) )
-display( maxproj )
-
-# Load all images
-imgs <- sapply( names(shapes), load_image, simplify=FALSE )
-
-##
-  
-tibble( imgname = names(shapes) ) %>%
-group_by( imgname ) %>%
-reframe( tibble( cell = seq_along(shapes[[imgname]]) ) ) %>%
-#slice_head(n=3) %>%
-group_by( imgname, cell ) %>%
-reframe( {
-  cat( "working on ", imgname, "\n" )
-  cell_mask <- polygon2mask( shapes[[imgname]][[cell]] )
-  tibble( 
-    mask_area = sum(cell_mask),
-    value = sum( apply( imgs[[imgname]][3,,,], 1, function(x) sum(x * cell_mask) ) ) )
-})  %>%
-mutate( subject = ifelse( str_detect( imgname, "pt" ), "pt", "ctrl" ) ) -> tbl
-
-tbl %>%
-mutate( imgname_short = st)
-
-tbl %>%
-ggplot() +
-ggbeeswarm::geom_beeswarm(aes(x=subject,y=value)) #+ scale_y_log10()
-
-tbl %>%
-mutate( subject = ifelse( str_detect( imgname, "pt" ), "pt", "ctrl" ) ) %>%
-ggplot() +
-  geom_point(aes(x=mask_area,y=value,col=subject))
-
-
-sapply( )
-
-sapply( seq_along(shapes[[imgname]])
-sum( apply( img[3,,,], 1, function(x) sum(x * cell_mask) ) )
